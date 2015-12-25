@@ -25,6 +25,10 @@ function [ pos ] = HarrisCornerDetector( im )
     k = 0.04;
     R = Ix2.*Iy2 - Ixy.^2 - k*(Ix2 + Iy2).^2;
 
-    pos = 0; %TODO calculate
+    %% Find local maxima points using supplied code
+    R = nonMaximumSuppression(R);
+    [y, x] = find(R);
+    pos = cat(2, x, y);
+
 end
 

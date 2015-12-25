@@ -34,6 +34,6 @@ function [ind1,ind2] = matchFeatures(desc1,desc2,minScore)
     [secondMaxCols, secondMaxRows] = meshgrid(secondMaxCols, secondMaxRows);
     filter = max(secondMaxCols, secondMaxRows);
     filter = max(filter, minScore);
-    
-    matches = S >= filter;
+       
+    [ind1, ind2] = find(S >= filter);
 end

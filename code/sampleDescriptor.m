@@ -27,6 +27,16 @@ function [ desc ] = sampleDescriptor( im, pos, descRad )
         end
     end
     
-    desc = desc - mean(desc(:));
-    desc = desc / norm(desc(:));
+    % Squeeze the 3d matrix into a 2d matrix, for ease of computation
+    desc = reshape(desc, [K*K, N]);
+    
+    % matlab's norm works on the whole matrix, so this version will
+    % calculate the 2-norm only for each column
+	colnorm = @(M) sqrt(sum(M.^2,1));
+    
+    % Normalize the descriptor
+    desc = desc - repmat(mean(desc), [K*K, 1]);
+    desc = desc ./ repmat(colnorm(desc), [K*K 1]);
+    
+    desc = reshape(desc, [K, K, N]);
 end

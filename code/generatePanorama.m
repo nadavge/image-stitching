@@ -49,7 +49,7 @@ for i=1:numFrames-1
   posb = pos{i+1}(indb,:);
   [Hpair{i},inlind] = ransacHomography(posa,posb,ransacNumIters,ransacInlierTol);
   if verbose
-    displayMatches(im{i},im{i+1},posa,posb,inlind);
+    %displayMatches(im{i},im{i+1},posa,posb,inlind);
 		drawnow;
   end
 end

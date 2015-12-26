@@ -13,8 +13,11 @@ function panorama = renderPanorama(im,H)
 
     for i=1:count,
         [height, width] = size(im{i});
-        myCorners = [1, 1; 1 height; width height; width 1];
-        
+        myCorners = [1, 1;
+                     1 height;
+                     width height;
+                     width 1];
+                 
         corners(:,:,i) = applyHomography(myCorners, H{i});
     end
     
@@ -47,14 +50,18 @@ function panorama = renderPanorama(im,H)
     % the panoramic image related to it, find the coordinates leading to
     % these places after homography, and interploate them to allow a
     % homography to the panoramic image.
-    strips
     for i=1:count,
         limits = strips(i) <= Xpano & Xpano < strips(i+1);
         currX = Xpano(limits);
         currY = Ypano(limits);
-        Ipano( limits ) = i/count;
+        
+        posPano = [ currX(:) currY(:) ];
+        posOrig = applyHomography(posPano, inv(H{i}));
+        
+        imPano = interp2(im{i}, posOrig(:,1), posOrig(:,2), 'linear');
+        imPano(isnan(imPano)) = 0;
+        Ipano(limits) = imPano;
     end
-    
-    imshow(Ipano);
-    panorama = centers;
+
+    panorama = Ipano;
 end

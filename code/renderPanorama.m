@@ -44,24 +44,40 @@ function panorama = renderPanorama(im,H)
     % Set the X_pano and Y_pano, used later for the interpolation, to fill
     % Ipano, the panoramic image
     [Xpano, Ypano] = meshgrid(xmin:xmax, ymin:ymax);
-    Ipano = zeros(size(Xpano));
+    panorama = zeros(size(Xpano));
     
     % Iterate over the images, for each image, find the new X_s and Y_s in
     % the panoramic image related to it, find the coordinates leading to
     % these places after homography, and interploate them to allow a
     % homography to the panoramic image.
+    
+    filterSizeIm = 27;
+    filterSizeMask = 21;
+    maxLevels = 7;
     for i=1:count,
         limits = strips(i) <= Xpano & Xpano < strips(i+1);
         currX = Xpano(limits);
         currY = Ypano(limits);
         
-        posPano = [ currX(:) currY(:) ];
+        % Homograph the image to the panorama
+        posPano = [ Xpano(:) Ypano(:) ];
         posOrig = applyHomography(posPano, inv(H{i}));
         
         imPano = interp2(im{i}, posOrig(:,1), posOrig(:,2), 'linear');
         imPano(isnan(imPano)) = 0;
-        Ipano(limits) = imPano;
+        imPano = reshape(imPano, size(panorama));
+        
+        % If the first, assign it as the image
+        if i == 1,
+            panorama = imPano;
+        % Otherwise, merge with the previous one
+        else
+            mask = zeros(size(panorama));
+            mask(strips(i) <= Xpano) = 1;
+            
+            panorama = pyramidBlending( imPano, panorama, mask, ...
+                maxLevels, filterSizeIm, filterSizeMask );
+        end
+        
     end
-
-    panorama = Ipano;
 end

@@ -56,8 +56,6 @@ function panorama = renderPanorama(im,H)
     maxLevels = 7;
     for i=1:count,
         limits = strips(i) <= Xpano & Xpano < strips(i+1);
-        currX = Xpano(limits);
-        currY = Ypano(limits);
         
         % Homograph the image to the panorama
         posPano = [ Xpano(:) Ypano(:) ];

@@ -26,11 +26,14 @@ function [H12,inliers] = ransacHomography(pos1,pos2,numIters,inlierTol)
     %   4. If the homography is the best so far (max number of inliers),
     %   save it
     for j=1:numIters,
-        indices = randperm( N, 4 );
+        indices = randperm( N, POINTS );
         p1 = pos1(indices, :);
         p2 = pos2(indices, :);
         
         tempH12 = leastSquaresHomography( p1, p2 );
+        if isempty(tempH12),
+            continue;
+        end
         
         homoPos1 = applyHomography( pos1, tempH12 );
         E = homoPos1 - pos2;

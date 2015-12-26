@@ -21,9 +21,9 @@ if verbose;
 end
 
 
-ransacNumIters = 1500;
+ransacNumIters = 15000;
 ransacInlierTol = 9;
-minMatchScore = 0.33;
+minMatchScore = 0.7;
 
 % load frames, detect feature point positions and compute their descriptors
 if verbose; 
@@ -49,7 +49,7 @@ for i=1:numFrames-1
   posb = pos{i+1}(indb,:);
   [Hpair{i},inlind] = ransacHomography(posa,posb,ransacNumIters,ransacInlierTol);
   if verbose
-    %displayMatches(im{i},im{i+1},posa,posb,inlind);
+    displayMatches(im{i},im{i+1},posa,posb,inlind);
 		drawnow;
   end
 end
@@ -71,7 +71,9 @@ end
 
 % render each image channel seperately using Htot
 if verbose; 
-  disp('Rendering panorama...'); end
+  disp('Rendering panorama...');
+end
+
 panorama(:,:,1) = renderPanorama(imR,Htot); 
 panorama(:,:,2) = renderPanorama(imG,Htot);
 panorama(:,:,3) = renderPanorama(imB,Htot);
@@ -79,11 +81,12 @@ panorama(:,:,3) = renderPanorama(imB,Htot);
 % possibly save panorama
 if ~isempty(outPath)
   if verbose; 
-    fprintf(1,'Saving panorama to %s...\n',outPath); end
+    fprintf(1,'Saving panorama to %s...\n',outPath);
+  end
   imwrite(panorama,outPath,'Quality',93);
 end
 
 if verbose
-  figure,imshow(panorama);
+  figure; imshow(panorama);
   disp('Done.');
 end

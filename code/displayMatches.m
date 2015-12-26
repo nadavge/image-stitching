@@ -28,10 +28,9 @@ function displayMatches(im1,im2,pos1,pos2,inliers)
     pos2 = pos2 + offsetMat;
     clear offsetMat;
 
-
+    plot( pos1(:, 1), pos1(:, 2), '.r' );
+    plot( pos2(:, 1), pos2(:, 2), '.r' );
     for i=1:N,
-        plot( pos1(i, 1), pos1(i, 2), '.r' );
-        plot( pos2(i, 1), pos2(i, 2), '.r' );
         
         if inlier <= length(inliers) && inliers(inlier)==i,
             plot( [pos1(i, 1) pos2(i, 1)] , [pos1(i, 2) pos2(i, 2)], '-y' );

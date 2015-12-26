@@ -10,12 +10,21 @@ function [H12,inliers] = ransacHomography(pos1,pos2,numIters,inlierTol)
 % H12 ? A 3x3 normalized homography matrix.
 % inliers ? A kx1 vector where k is the number of inliers, containing the
 % indices in pos1/pos2 of the maximal set of inlier matches found.
+
+    % The point count needed to calculate the homography
     POINTS = 4;
     N = size(pos1, 1);
     
     inliers = [];
     H12 = diag([1 1 1]);
     
+    % Iterate number of iterations requested, for each iteration:
+    %   1. Choose POINTS random points from the match
+    %   2. Calculate the homography of those points
+    %   3. Apply the homography, and test how many points fell in inlierTol
+    %   from one another
+    %   4. If the homography is the best so far (max number of inliers),
+    %   save it
     for j=1:numIters,
         indices = randperm( N, 4 );
         p1 = pos1(indices, :);

@@ -8,8 +8,11 @@ function pos2 = applyHomography( pos1, H12 )
 % transforming pos1 using H12
     N = size(pos1, 1);
     
+    % Add scale column
     tempPos = cat( 2, pos1, ones(N, 1) );
+    % Transform
     tempPos = tempPos * H12';
     
+    % Rescale according to scale factor, and remove it
     pos2 = tempPos(:, 1:2) ./ [tempPos(:,3) tempPos(:,3)];
 end

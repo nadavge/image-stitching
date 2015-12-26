@@ -23,12 +23,12 @@ function displayMatches(im1,im2,pos1,pos2,inliers)
     % item in the vector
     inlier = 1;
     inliers = sort(inliers);
+    % Add the offset of the 2nd image to allow easy plotting
     offsetMat = repmat( [im2offset 0], [N 1] );
-    size(pos2)
-    size(offsetMat)
     pos2 = pos2 + offsetMat;
     clear offsetMat;
-        
+
+
     for i=1:N,
         plot( pos1(i, 1), pos1(i, 2), '.r' );
         plot( pos2(i, 1), pos2(i, 2), '.r' );

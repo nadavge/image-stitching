@@ -85,18 +85,12 @@ function panorama = renderPanorama(im,H)
             leftBound = floor(min(cornersX) - xmin) + 1;
             rightBound = floor(max(cornersX) - xmin) + 1;
             blendRange = leftBound:rightBound;
-            
+
             panorama(:, blendRange) = pyramidBlending( ...
                 imPano(:, blendRange), panorama(:, blendRange),...
                 mask(:, blendRange),...
                 maxLevels, filterSizeIm, filterSizeMask );
             
-            %figure;imshow(imPano(:, blendRng));
-            %figure;imshow(panorama(:, blendRng));
-            %input('continue...');
-            
-            % Put the rest of imPano to the right of center
-            panorama( :, centerIdx:end ) = imPano( :, centerIdx:end );
         end
         
     end

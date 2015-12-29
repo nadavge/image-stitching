@@ -19,10 +19,6 @@ function displayMatches(im1,im2,pos1,pos2,inliers)
     figure;imshow(im);
     hold on;
     
-    % Sort them, so that if the next item is an inlier, its the inlier-th
-    % item in the vector
-    inlier = 1;
-    inliers = sort(inliers);
     % Add the offset of the 2nd image to allow easy plotting
     offsetMat = repmat( [im2offset 0], [N 1] );
     pos2 = pos2 + offsetMat;
@@ -30,13 +26,20 @@ function displayMatches(im1,im2,pos1,pos2,inliers)
 
     plot( pos1(:, 1), pos1(:, 2), '.r' );
     plot( pos2(:, 1), pos2(:, 2), '.r' );
-    for i=1:N,
-        
-        if inlier <= length(inliers) && inliers(inlier)==i,
-            plot( [pos1(i, 1) pos2(i, 1)] , [pos1(i, 2) pos2(i, 2)], '-y' );
-            inlier = inlier + 1;
-        else
-            plot( [pos1(i, 1) pos2(i, 1)] , [pos1(i, 2) pos2(i, 2)], '-b' );
-        end
-    end
+    
+    inliersPos1 = pos1(inliers, :);
+    inliersPos2 = pos2(inliers, :);
+    outliersPos1 = pos1;
+    outliersPos1(inliers, :) = [];
+    outliersPos2 = pos2;
+    outliersPos2(inliers, :) = [];
+    
+    inliersX = cat(2, inliersPos1(:,1), inliersPos2(:,1));
+    outliersX = cat(2, outliersPos1(:,1), outliersPos2(:,1));
+    inliersY = cat(2, inliersPos1(:,2), inliersPos2(:,2));
+    outliersY = cat(2, outliersPos1(:,2), outliersPos2(:,2));
+    clear inliersPos1 inliersPos2 outliersPos1 outliersPos2;
+    
+    plot( outliersX' , outliersY', '-b' );
+    plot( inliersX' , inliersY', '-y' );
 end

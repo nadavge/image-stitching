@@ -99,6 +99,5 @@ function panorama = renderPanorama(im,H)
             panorama( :, centerIdx:end ) = imPano( :, centerIdx:end );
         end
         
-        prevCenterIdx = centerIdx;
     end
 end

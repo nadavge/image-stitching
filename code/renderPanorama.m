@@ -51,12 +51,11 @@ function panorama = renderPanorama(im,H)
     % these places after homography, and interploate them to allow a
     % homography to the panoramic image.
     
-    filterSizeIm = 27;
-    filterSizeMask = 21;
+    filterSizeIm = 13;
+    filterSizeMask = 13;
     maxLevels = 7;
-    for i=1:count,
-        limits = strips(i) <= Xpano & Xpano < strips(i+1);
-        
+    
+    for i=1:count,       
         % Homograph the image to the panorama
         posPano = [ Xpano(:) Ypano(:) ];
         posOrig = applyHomography(posPano, inv(H{i}));
@@ -65,6 +64,7 @@ function panorama = renderPanorama(im,H)
         imPano(isnan(imPano)) = 0;
         imPano = reshape(imPano, size(panorama));
         
+        centerIdx = find(centers(i, 1) <= Xpano(1,:));
         % If the first, assign it as the image
         if i == 1,
             panorama = imPano;
@@ -73,9 +73,32 @@ function panorama = renderPanorama(im,H)
             mask = zeros(size(panorama));
             mask(strips(i) <= Xpano) = 1;
             
-            panorama = pyramidBlending( imPano, panorama, mask, ...
+            % Running the pyramid blending in big frames is expensive, so
+            % instead we merge them only between the two centers.
+            % In order to do that we take everything to the right of the
+            % center of the last picture, that is also not to the right of
+            % the current center.
+            cornersX = corners(:,1,i-1:i);
+            cornersX = cornersX(:);
+
+            % TODO fix a bound here, incorrect (exceeds matrix size)
+            leftBound = floor(min(cornersX) - xmin) + 1;
+            rightBound = floor(max(cornersX) - xmin) + 1;
+            blendRange = leftBound:rightBound;
+            
+            panorama(:, blendRange) = pyramidBlending( ...
+                imPano(:, blendRange), panorama(:, blendRange),...
+                mask(:, blendRange),...
                 maxLevels, filterSizeIm, filterSizeMask );
+            
+            %figure;imshow(imPano(:, blendRng));
+            %figure;imshow(panorama(:, blendRng));
+            %input('continue...');
+            
+            % Put the rest of imPano to the right of center
+            panorama( :, centerIdx:end ) = imPano( :, centerIdx:end );
         end
         
+        prevCenterIdx = centerIdx;
     end
 end

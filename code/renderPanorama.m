@@ -77,12 +77,12 @@ function panorama = renderPanorama(im,H)
             % In order to do that we take everything to the right of the
             % center of the last picture, that is also not to the right of
             % the current center.
-            cornersX = corners(:,:,i-1:i);
+            cornersX = corners(:,1,i-1:i);
             cornersX = cornersX(:);
 
             % TODO fix a bound here, incorrect (exceeds matrix size)
-            leftBound = floor(min(cornersX) - xmin) + 1
-            rightBound = floor(max(cornersX) - xmin)
+            leftBound = floor(min(cornersX) - xmin) + 1;
+            rightBound = floor(max(cornersX) - xmin) + 1;
             blendRange = leftBound:rightBound;
             
             panorama(:, blendRange) = pyramidBlending( ...

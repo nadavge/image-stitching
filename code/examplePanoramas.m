@@ -5,13 +5,14 @@
 % ../data/out/examples
 %
 
+verbose = true;
 warning('OFF','images:initSize:adjustingMag');
 tic;
 numFrames = 2;
 inpPathFormat = '../data/inp/examples/oxford%d.jpg';
  outPath = '../data/out/examples/oxford.jpg';
 renderAtFrame = ceil(numFrames/2);
-generatePanorama(inpPathFormat,outPath,numFrames,renderAtFrame,true);
+generatePanorama(inpPathFormat,outPath,numFrames,renderAtFrame,verbose);
 toc;
 pause(2);
 close all;
@@ -20,7 +21,7 @@ numFrames = 3;
 inpPathFormat = '../data/inp/examples/backyard%d.jpg';
 outPath = '../data/out/examples/backyard.jpg';
 renderAtFrame = ceil(numFrames/2);
-generatePanorama(inpPathFormat,outPath,numFrames,renderAtFrame,true);
+generatePanorama(inpPathFormat,outPath,numFrames,renderAtFrame,verbose);
 toc;
 pause(2);
 close all;
@@ -30,7 +31,7 @@ numFrames = 4;
 inpPathFormat = '../data/inp/examples/office%d.jpg';
 outPath = '../data/out/examples/office.jpg';
 renderAtFrame = ceil(numFrames/2);
-generatePanorama(inpPathFormat,outPath,numFrames,renderAtFrame,true);
+generatePanorama(inpPathFormat,outPath,numFrames,renderAtFrame,verbose);
 toc;
 pause(2);
 close all;

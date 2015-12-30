@@ -1,0 +1,43 @@
+nadavg
+
+|   README
+|
++---code
+|       accumulateHomographies.m - Accumulate homography matrix sequence
+|       applyFilter.m            - Blur an image using a given filter
+|       applyHomography.m        - Transform coordinates pos1 to pos2 using homography H12
+|       blurInImageSpace.m       - Blur an image in image space
+|       displayMatches.m         - Display matched pt. pairs overlayed on given image pair
+|       examplePanoramas.m       - This script generates all of the provided example panoramas
+|       findFeatures.m           - Detect feature points in pyramid and sample their descriptors
+|       GaussianPyramid.m        - Create a gaussian pyramid
+|       generatePanorama.m       - Load set of RGB frames and combine them into a single RGB panorama
+|       HarrisCornerDetector.m   - Extract key points from the image
+|       imexpand.m               - Expand an image derived from a given filter
+|       imReadAndConvert.m       - Reads an image file and converts it to the specified represntation
+|       LaplacianPyramid.m       - Create a laplacian pyramid
+|       LaplacianToImage.m       - Laplacian pyramid reconstruction
+|       leastSquaresHomography.m - Compute least square fit to homography transforming between two sets of points
+|       makeFilter.m             - Generate a gaussian filter (1D) of given size (odd size)
+|       matchFeatures.m          - Match feature descriptors in desc1 and desc2
+|       myPanorama.m             - This script generates two example panorama images found online
+|       nonMaximumSuppression.m  - Find local maxima of corner metric matrix
+|       pyramidBlending.m        - Use laplacian pyramids to blend two images together
+|       ransacHomography.m       - Fit homography to maximal inliers given point matches using RANSAC
+|       renderPanorama.m         - Renders a set of images into a combined panorama image
+|       sampleDescriptor.m       - Sample a MOPS-like descriptor at given positions in an image
+|       spreadOutCorners.m       - Detects Harris corners in an nxm grid of sub-images of im
+|
+\---data
+    +---inp
+    |   +---mine
+    |           building1.JPG
+    |           building2.JPG
+    |           building3.JPG
+    |           church1.jpg  
+    |           church2.jpg  
+    |
+    \---out
+        +---mine
+                building.jpg
+                church.jpg

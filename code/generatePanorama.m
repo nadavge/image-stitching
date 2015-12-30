@@ -21,8 +21,8 @@ if verbose;
 end
 
 
-ransacNumIters = 15000;
-ransacInlierTol = 9;
+ransacNumIters = 18000;
+ransacInlierTol = 9.2;
 minMatchScore = 0.86;
 
 % load frames, detect feature point positions and compute their descriptors
